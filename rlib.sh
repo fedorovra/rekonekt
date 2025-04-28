@@ -23,15 +23,7 @@ function a() {
 
 function aa() {
     IP_BEFORE=$(get_ip)
-    ( echo "atc 'AT+CFUN=7'"; \
-    sleep 1; \
-    echo "atc 'AT+CFUN=1'"; \
-    sleep 1; \
-    echo "atc 'AT+CFUN=1'"; \
-    sleep 1; \
-    echo "atc 'AT+CFUN=1'"; \
-    sleep 1; \
-    echo "quit"; ) | telnet $MODEM_IP >/dev/null 2>&1
+    modem_connection_reload
     for i in {1..3}
     do
         counter=$i
@@ -40,23 +32,13 @@ function aa() {
             if [ $IP_BEFORE != $IP_AFTER ]; then
                 break
             else
-                ( echo "atc 'AT+CFUN=7'"; \
-                sleep 1; \
-                echo "atc 'AT+CFUN=1'"; \
-                sleep 1; \
-                echo "atc 'AT+CFUN=1'"; \
-                sleep 1; \
-                echo "atc 'AT+CFUN=1'"; \
-                sleep 1; \
-                echo "quit"; ) | telnet $MODEM_IP >/dev/null 2>&1
+                modem_connection_reload
                 sleep 3
             fi
         fi
     done
     if [ $counter == 3 ]; then
-        ( echo "atc 'AT^RESET'"; \
-        sleep 1; \
-        echo "quit"; ) | telnet $MODEM_IP >/dev/null 2>&1
+        modem_connection_reset
     fi
 }
 
@@ -91,23 +73,13 @@ function aaa() {
             if [ $IP_BEFORE != $IP_AFTER ]; then
                 break
             else
-                ( echo "atc 'AT+CFUN=7'"; \
-                sleep 1; \
-                echo "atc 'AT+CFUN=1'"; \
-                sleep 1; \
-                echo "atc 'AT+CFUN=1'"; \
-                sleep 1; \
-                echo "atc 'AT+CFUN=1'"; \
-                sleep 1; \
-                echo "quit"; ) | telnet $MODEM_IP >/dev/null 2>&1
+                modem_connection_reload
                 sleep 3
             fi
         fi
     done
     if [ $counter == 3 ]; then
-        ( echo "atc 'AT^RESET'"; \
-        sleep 1; \
-        echo "quit"; ) | telnet $MODEM_IP >/dev/null 2>&1
+        modem_connection_reset
     fi
 }
 

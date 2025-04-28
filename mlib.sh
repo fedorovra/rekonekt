@@ -14,13 +14,13 @@ function get_token() {
 function modem_reboot() {
     get_token
     curl -s -X POST \
-                    -H "Cookie: $SESSION_ID" \
-                    -H "__RequestVerificationToken: $TOKEN" \
-                    -d "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-                        <request>
-                            <Control>1</Control>
-                        </request>" \
-                    http://$MODEM_IP/api/device/control
+                        -H "Cookie: $SESSION_ID" \
+                        -H "__RequestVerificationToken: $TOKEN" \
+                        -d "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+                            <request>
+                                <Control>1</Control>
+                            </request>" \
+                        http://$MODEM_IP/api/device/control
 }
 
 function get_mode() {
@@ -67,4 +67,22 @@ function set_mode() {
                             </request>" \
                         http://$MODEM_IP/api/net/net-mode
     fi
+}
+
+function modem_connection_reload() {
+    ( echo "atc 'AT+CFUN=7'"; \
+    sleep 1; \
+    echo "atc 'AT+CFUN=1'"; \
+    sleep 1; \
+    echo "atc 'AT+CFUN=1'"; \
+    sleep 1; \
+    echo "atc 'AT+CFUN=1'"; \
+    sleep 1; \
+    echo "quit"; ) | telnet $MODEM_IP >/dev/null 2>&1
+}
+
+function modem_connection_reset() {
+    ( echo "atc 'AT^RESET'"; \
+    sleep 1; \
+    echo "quit"; ) | telnet $MODEM_IP >/dev/null 2>&1
 }
