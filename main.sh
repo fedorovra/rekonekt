@@ -9,7 +9,7 @@ while getopts ":m:f:h" opt ;
 do
     case $opt in
     m) 
-        MODEM_IP=$OPTARG;
+        MODEM=$OPTARG;
         ;;
     f) 
         FUNCTION=$OPTARG;
@@ -24,6 +24,9 @@ do
         ;;
     esac
 done
+
+NET=$(echo $MODEM | awk -F'.' '{ print $3 }')
+MODEM_IP="192.168.$NET.1"
 
 if [ ! $MODEM_IP ] || [ ! $FUNCTION ] ; then
     echo ""
