@@ -78,7 +78,7 @@ function modem_connection_reload() {
     sleep 1; \
     echo "atc 'AT+CFUN=1'"; \
     sleep 1; \
-    echo "quit"; ) | telnet $MODEM_IP #>/dev/null 2>&1
+    echo "quit"; ) | telnet $MODEM_IP >/dev/null 2>&1
 }
 
 function modem_connection_reset() {

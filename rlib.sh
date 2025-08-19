@@ -28,6 +28,7 @@ function aa() {
     for i in {1..3}
     do
         counter=$i
+        echo $counter
         IP_AFTER=$(get_ip)
         echo $IP_AFTER
         if [ $IP_AFTER ]; then
