@@ -22,11 +22,14 @@ function a() {
 }
 
 function aa() {
+    IP_BEFORE=""
+    IP_AFTER=""
     IP_BEFORE=$(get_ip)
     echo $IP_BEFORE
     modem_connection_reload
     for i in {1..3}
     do
+        sleep 3
         counter=$i
         echo $counter
         IP_AFTER=$(get_ip)
@@ -36,7 +39,6 @@ function aa() {
                 break
             else
                 modem_connection_reload
-                sleep 3
             fi
         fi
     done
