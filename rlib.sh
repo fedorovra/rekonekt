@@ -2,17 +2,14 @@
 
 function a() {
     IP_BEFORE=$(get_ip)
-    set_mode >/dev/null 2>&1
     for i in {1..3}
     do
         counter=$i
+        set_mode >/dev/null 2>&1 ; sleep 3
         IP_AFTER=$(get_ip)
         if [ $IP_AFTER ]; then
             if [ $IP_BEFORE != $IP_AFTER ]; then
                 break
-            else
-                set_mode >/dev/null 2>&1
-                sleep 3
             fi
         fi
     done
@@ -23,16 +20,11 @@ function a() {
 
 function aa() {
     IP_BEFORE=$(get_ip)
-    echo $IP_BEFORE
     for i in {1..3}
     do
         counter=$i
         modem_connection_reload ; sleep 3
-        
-        echo $counter
-
         IP_AFTER=$(get_ip)
-        echo $IP_AFTER
         if [ $IP_AFTER ]; then
             if [ $IP_BEFORE != $IP_AFTER ]; then
                 break

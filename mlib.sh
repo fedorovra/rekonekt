@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 
 function get_token() {
-    DATA=$(curl -s http://$MODEM_IP/api/webserver/SesTokInfo)
+    DATA=$(curl -s -m 3 http://$MODEM_IP/api/webserver/SesTokInfo)
     SESSION_ID=$(echo "$DATA" | grep "SesInfo" | awk -F'[<>]' '/SesInfo/{print $3}')
     TOKEN=$(echo "$DATA" | grep "TokInfo" | awk -F'[<>]' '/TokInfo/{print $3}')
 
     if [ ! $TOKEN ]; then
-        DATA=$(curl -s http://$MODEM_IP/api/webserver/token)
+        DATA=$(curl -s -m 3 http://$MODEM_IP/api/webserver/token)
         TOKEN=$(echo "$DATA" | grep "token" |  awk -F'[<>]' '/token/{print $3}')
     fi
 }
 
 function modem_reboot() {
     get_token
-    curl -s -X POST \
+    curl -s -m 3 -X POST \
                         -H "Cookie: $SESSION_ID" \
                         -H "__RequestVerificationToken: $TOKEN" \
                         -d "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
@@ -26,11 +26,11 @@ function modem_reboot() {
 function get_mode() {
     get_token
     if [ ! $TOKEN ]; then
-        curl -s \
+        curl -s -m 3 \
                         -H "Referer: http://$MODEM_IP/index.html" \
                         "http://$MODEM_IP/goform/goform_get_cmd_process?cmd=network_type"
     else
-        curl -s \
+        curl -s -m 3 \
                         -H "Cookie: $SESSION_ID" \
                         -H "__RequestVerificationToken: $TOKEN" \
                         http://$MODEM_IP/api/net/net-mode
@@ -46,7 +46,7 @@ function set_mode() {
         else
             MODE="Only_WCDMA"
         fi
-        curl -s -X POST \
+        curl -s -m 3 -X POST \
                         -H "Referer: http://$MODEM_IP/index.html" \
                         -d "isTest=false&goformId=SET_BEARER_PREFERENCE&BearerPreference=$MODE" \
                         "http://$MODEM_IP/goform/goform_set_cmd_process"
@@ -58,7 +58,7 @@ function set_mode() {
             MODE="00"
         fi
         get_token
-        curl -s -X POST \
+        curl -s -m 3 -X POST \
                         -H "Cookie: $SESSION_ID" \
                         -H "__RequestVerificationToken: $TOKEN" \
                         -d "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
