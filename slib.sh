@@ -2,10 +2,8 @@
 
 function get_ip() {
     if [ $http_proxy ]; then
-        echo $http_proxy
         $CURL -s -m 5 ipinfo.io/ip
     else
-        echo $MODEM_IP
         $CURL -s -m 5 --interface $MODEM_IP"00" ipinfo.io/ip
     fi
 }
