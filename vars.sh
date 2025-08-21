@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-HOST=$(hostname)
+# HOST=$(hostname)
+HOST="102"
 PROXY='/usr/local/3proxy/3proxy'
 CFG_DIR='/usr/local/3proxy/mob'
 CURL=$(which curl)
